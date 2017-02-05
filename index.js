@@ -75,7 +75,7 @@ exports.parse = function(txt) {
 var recursParse = function(txt) {
 
   var currentTable = null       // last table name to add samples to
-    , idCounter = -1, nextId = function() { idCounter++; return idCounter } 
+    , idCounter = -1, nextId = function() { idCounter++; return idCounter }
     , patch = {nodes: [], connections: [], layout: undefined, args: []}
     , line, firstLine = true
     , nextLine = function() { txt = txt.slice(line.index + line[0].length) }
@@ -107,7 +107,7 @@ var recursParse = function(txt) {
             id: nextId(),
             subpatch: subpatch
           }, attrs))
-          // The remaining text is what was returned 
+          // The remaining text is what was returned
           txt = result[1]
 
         // Else this is the first line of the patch file
@@ -122,7 +122,7 @@ var recursParse = function(txt) {
         }
 
       } else throw new Error('invalid element type for chunk #N : ' + elementType)
-    //================ #X : patch elements ================// 
+    //================ #X : patch elements ================//
     } else if (chunkType === '#X') {
       var elementType = tokens[1]
 
@@ -141,7 +141,7 @@ var recursParse = function(txt) {
             currentTable.data.push(0)
           currentTable = null
         }
-        
+
         // Return `subpatch`, `remaining text`, `attrs`
         nextLine()
         return [patch, txt, {
@@ -206,7 +206,7 @@ var recursParse = function(txt) {
           }
         patch.nodes.push(table)
 
-        // remind the last table for handling correctly 
+        // remind the last table for handling correctly
         // the table related instructions which might follow.
         currentTable = table
 
@@ -224,10 +224,11 @@ var recursParse = function(txt) {
 
       // ---- coords : visual range of framsets ---- //
       } else if (elementType === 'coords') { // TODO ?
+      } else if (elementType === 'declare') { // TODO TOO ?
       } else throw new Error('invalid element type for chunk #X : ' + elementType)
-      
+
       nextLine()
-    //================ #A : array data ================// 
+    //================ #A : array data ================//
     } else if (chunkType === '#A') {
       // reads in part of an array/table of data, starting at the index specified in this line
       // name of the array/table comes from the the '#X array' and '#X restore' matches above
@@ -246,7 +247,7 @@ var recursParse = function(txt) {
 
     firstLine = false
   }
-  
+
   return [patch, '']
 }
 
